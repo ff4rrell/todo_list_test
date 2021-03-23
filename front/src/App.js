@@ -31,7 +31,7 @@ function App() {
 
   const refreshTodoList = async () => {
     const { list, total } = await requester.get(
-      Pathes.todo(filter, searchText, sort, currentPage, PAGE_LIMIT, userToken)
+      Pathes.todo(filter, searchText, sort, currentPage, PAGE_LIMIT, userToken.token)
     );
     setTodoList(list);
     setTodoTotal(total);
