@@ -1,0 +1,51 @@
+GET http://localhost:4000/todo/52
+
+###
+PUT http://localhost:4000/todo
+Content-Type: application/json
+
+{"title":"first todo"}
+
+###
+POST http://localhost:4000/todo/0
+Content-Type: application/json
+
+{"title":"asdfasdff"}
+
+###
+DELETE http://localhost:4000/todo/3
+
+
+### 
+
+GET http://localhost:4000/userList
+
+### 
+
+PUT  http://localhost:4000/signup
+Content-Type: application/json
+
+{
+    "name": "admin",
+    "password": "admin"
+}
+
+
+###
+
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "name":"admin", 
+    "password": "admin"
+}
+
+###
+
+POST http://localhost:4000/logout
+Content-Type: application/json
+
+{
+    "token": "0.8706525482888237"
+}
