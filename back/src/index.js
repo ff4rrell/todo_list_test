@@ -8,7 +8,8 @@ const UserManager = require("./user-manager");
 const todoManager = new TodoManager();
 const userManager = new UserManager();
 stubber(todoManager);
-console.log(todoManager);
+// console.log(todoManager);
+// console.log(stubber(todoManager), "stubber");
 
 app.use(cors());
 app.use(express.json());
@@ -20,18 +21,6 @@ app.get("/", function (req, res) {
 //crud
 // createTodoWithUserId
 
-app.put("/todo", function (req, res, next) {
-  const titleForNewTodo = req.body.title;
-  const userToken = req.body.userToken;
-
-  const user = userManager.findByToken(userToken)
-  const newTodo = todoManager.createTodoWithUserId(titleForNewTodo, user);
-  todoManager.addIfNotPresentedByTitle(newTodo);
-  console.log(userToken ,"userToken")
-  // console.log(todoManager, "todoManager")
-  res.json(newTodo);
-});
-
 
 app.get("/todo", function (req, res, next) {
   const filter = req.query.filter;
@@ -41,11 +30,13 @@ app.get("/todo", function (req, res, next) {
   const page = req.query.page;
   const limit = req.query.limit;
   
-  const userToken = req.body.userToken;
-  const user = userManager.findByToken(userToken)
+  const userToken = req.query.userToken;
+  const user = userManager.findByToken(userToken);
+  console.log(userToken, "get, get")
+
   res.json(
     todoManager.getByFilterAndSearchTextAndSort(
-      user,
+      user.userId,
       filter,
       searchText,
       sortField,
@@ -55,16 +46,37 @@ app.get("/todo", function (req, res, next) {
     )
   );
 });
+
+
+app.put("/todo", function (req, res) {
+  const titleForNewTodo = req.body.title;
+  const userToken = req.query.userToken;
+
+  console.log(userToken ,"userToken, put")
+  const user = userManager.findByToken(userToken)
+  const newTodo = todoManager.createTodoWithUserId(titleForNewTodo, user);
+  todoManager.addIfNotPresentedByTitle(newTodo);
+  
+  // console.log(todoManager, "todoManager")
+  res.json(newTodo);
+});
+
 app.get("/todo/:todoId", function (req, res, next) {
   const todoId = Number(req.params.todoId);
   res.json(todoManager.getById(todoId));
 });
+
 app.post("/todo/:todoId", function (req, res, next) {
   const todoId = Number(req.params.todoId);
+  const token = req.body.token;
   const changeSet = req.body;
+  const user = userManager.findByToken(token);
+  // console.log(token, "token, post");
+  // console.log(user, "user, post")
   todoManager.changeTodo(todoId, changeSet);
   res.json(todoManager.getById(todoId));
 });
+
 app.delete("/todo/:todoId", function (req, res, next) {
   const todoId = Number(req.params.todoId);
   todoManager.remove(todoId);
@@ -84,7 +96,7 @@ app.put("/signup", function (req, res) {
 app.post("/login", function (req, res) {
     const userInfo = req.body;
     const user = userManager.setTokenForUser(userInfo.name, userInfo.password);
-    console.log(user)
+    // console.log(user, "user, post")
     
     res.json({ token: user.token })
 });
@@ -94,7 +106,7 @@ app.get("/userList", function(req, res){
 })
 app.post("/logout", function(req, res) {
   const tokenFromUser = req.body;
-  console.log(tokenFromUser, "token")
+  // console.log(tokenFromUser, "token")
   userManager.deleteTokenFromUser(tokenFromUser.token);
   res.json('ok')
 })

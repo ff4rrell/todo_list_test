@@ -29,7 +29,7 @@ class UserManager {
   }
 
   findByToken(token, userList) {
-    return (userList || this.getAll()).filter((it) => it.token === token) //.pop();
+    return (userList || this.getAll()).find((it) => it.token === token) //.pop();
   }
 
   searchByName(name, userList) {

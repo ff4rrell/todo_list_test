@@ -62,14 +62,15 @@ class TodoManager {
       .filter(it => it.title.includes(searchText))
   }
 
-  getByFilterAndSearchTextAndSort(filter = Filters.ALL,
+  getByFilterAndSearchTextAndSort(userId = null,
+                                  filter = Filters.ALL,
                                   searchText = '',
                                   sortField = 'todoId',
                                   sortDir = 'asc',
                                   page = 1,
                                   limit = 10) {
     const list = this.getByFilterAndSearchText(filter, searchText)
-      .sort(sortings[sortField])
+      .sort(sortings[sortField]).filter( it => it.userId === userId)
     const filteredAndSorted = sortDir === 'asc' ? list : list.reverse()
     const start = (page - 1) * limit
     const end = page * limit

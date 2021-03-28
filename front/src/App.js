@@ -31,15 +31,17 @@ function App() {
 
   const refreshTodoList = async () => {
     const { list, total } = await requester.get(
-      Pathes.todo(filter, searchText, sort, currentPage, PAGE_LIMIT, userToken.token)
+      Pathes.todo( userToken.token, filter, searchText, sort, currentPage, PAGE_LIMIT)
+      
     );
+    console.log(Pathes.todo( userToken.token, filter, searchText, sort, currentPage, PAGE_LIMIT))
     setTodoList(list);
     setTodoTotal(total);
   };
 
   useEffect(() => {
     refreshTodoList();
-  }, [filter, searchText, sort, currentPage]);
+  }, [filter, searchText, sort, currentPage,userToken]);
 
   const maxPage = Math.ceil(todoTotal / PAGE_LIMIT);
   const pages = [];
@@ -64,8 +66,7 @@ function App() {
     console.log(userToken, 'userToken')
     
     setUseToken({
-      token: tokenFromServer.token,
-      userId: tokenFromServer.userId
+      token: tokenFromServer.token
     })
 
     setUserLogin({
@@ -78,15 +79,14 @@ function App() {
     await requester.post("/logout", userToken);
 
     setUseToken({
-      token: null,
-      userId: null
+      token: null
     })
 
   }
   return (
     <div className="App">
     
-      <button onClick={()=> {console.log(todoList)}}>TOYOTA</button>
+      <button onClick={()=> {console.log(userToken)}}>TOYOTA</button>
       
       {userToken.token ? (
         <TodoManager
@@ -105,7 +105,7 @@ function App() {
           onAdd={refreshTodoList}
           removeTokenAndLogOut={removeTokenAndLogOut}
           setSearchText={setSearchText}
-          userToken={userToken.token}
+          userToken={userToken}
         />
       ) : (
         <CreateUser

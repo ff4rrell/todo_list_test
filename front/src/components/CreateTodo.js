@@ -6,13 +6,14 @@ import Pathes from "../pathes";
 export function CreateTodo({onAdd, userToken}) {
   const [inputValue, setInputValue] = useState('')
   const addNewTodo = async () => {
-    await requester.put(Pathes.todo(), {
+    await requester.put(Pathes.todo(userToken.token), {
       title: inputValue,
-      token: userToken
+      token: userToken.token
     })
     setInputValue('')
     onAdd && onAdd()
   }
+
   return <>
     <input
       type="text"
