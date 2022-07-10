@@ -113,7 +113,7 @@ function App() {
           onAdd={refreshTodoList}
           userLogin={userLogin}
           setUserLogin={setUserLogin}
-          loginUser={getLoginUser}
+          getLoginUser={getLoginUser}
         />
       )}
     </div>
