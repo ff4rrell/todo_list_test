@@ -58,7 +58,7 @@ function App() {
   const right = currentPage + 2 > maxPage ? maxPage : currentPage + 2;
   const pagesToRender = pages.length < 6 ? pages : pages.slice(left, right);
   
-  const loginUser = async () => {
+  const getLoginUser = async () => {
     const tokenFromServer = await requester.post("/login", {
       name: userLogin.name,
       password: userLogin.password
@@ -97,7 +97,6 @@ function App() {
           todoList={todoList}
           sort={sort}
           setSort={setSort}
-          refreshTodoList={refreshTodoList}
           changePage={changePage}
           currentPage={currentPage}
           maxPage={maxPage}
@@ -114,7 +113,7 @@ function App() {
           onAdd={refreshTodoList}
           userLogin={userLogin}
           setUserLogin={setUserLogin}
-          loginUser={loginUser}
+          loginUser={getLoginUser}
         />
       )}
     </div>

@@ -2,7 +2,7 @@ import React from "react";
 import requester from "../utils/requester";
 
 const CreateUser = 
-({ user, setUser,loginUser, userLogin, setUserLogin }) => {
+({ user, setUser, getLoginUser, userLogin, setUserLogin }) => {
 
   
   const addNewUser = async () => {
@@ -70,7 +70,7 @@ const CreateUser =
           }}
         />
         password
-        <button onClick={loginUser}>login</button>
+        <button onClick={getLoginUser}>login</button>
       </div>
     </>
   );
